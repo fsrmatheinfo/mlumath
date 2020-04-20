@@ -1,0 +1,82 @@
+%! Package = mlumath
+%! Author = Fachschaftsrat Mathematik/Informatik der Studierendenschaft der Martin-Luther-Universität Halle-Wittenberg
+%! Date = 2020/04/20
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mlumath}[2020/04/20 v1.0]
+
+% Base packages:
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{amssymb}
+\RequirePackage{amstext}
+\RequirePackage{array}
+\RequirePackage{cancel}
+
+\newcommand{\union}{\cup}
+\newcommand{\disjunction}{\uplus}
+\newcommand{\intersection}{\cap}
+\newcommand{\intersect}{\cap}
+\newcommand{\infinity}{\infty} % Unendlich-Zeichen
+\newcommand{\corresponds}{\triangleq} % Entspricht-Zeichen
+
+\newcommand{\C}{\mathbb{C}} \newcommand{\complexnumbers}{\C} % Complex numbers.
+\newcommand{\R}{\mathbb{R}} \newcommand{\realnumbers}{\R} % Real numbers.
+\newcommand{\Q}{\mathbb{Q}} \newcommand{\rationalnumbers}{\Q} % Rational numbers.
+\newcommand{\Z}{\mathbb{Z}} \newcommand{\wholenumbers}{\Z} % Whole numbers.
+\newcommand{\N}{\mathbb{N}} \newcommand{\naturalnumbers}{\N} % Natural numbers.
+\newcommand{\B}{\mathbb{B}} \newcommand{\binarynumbers}{\B} % Binary numbers.
+\renewcommand{\O}{\mathcal{O}} % asymptotic O-Notation ("Datenstrukturen und effiziente Algorithmen" lecture)
+
+\newcommand{\mland}{\(\land\)} % \land in text.
+\newcommand{\mlor}{\(\lor\)} % \lor in text.
+
+\newcommand{\base}[1]{\mathcal{#1}} % Formatierung für Basis ("Lineare Algebra" lecture)
+
+% Math operators for "Lineare Algebra" lecture:
+\DeclareMathOperator{\im}{im} % Image
+\DeclareMathOperator{\id}{id} % Identity
+\DeclareMathOperator{\sel}{sel} % Selection
+\DeclareMathOperator{\dom}{dom} % Domain
+\DeclareMathOperator{\ran}{ran} % Range
+\DeclareMathOperator{\Hom}{Hom} % Homomorphism
+\DeclareMathOperator{\End}{End} % Endomorphism
+
+% Math operators for "Datenstrukturen und effiziente Algorithmen" lecture:
+\DeclareMathOperator{\indeg}{indeg} % Indegree
+\DeclareMathOperator{\outdeg}{outdeg} % Outdegree
+
+% Swap commands for better style.
+\let\tmp\mod \let\mod\bmod \let\bmod\tmp
+\let\varemptyset\emptyset \let\emptyset\varnothing
+\let\tmp\epsilon \let\epsilon\varepsilon \let\varepsilon\tmp
+\let\tmp\phi \let\phi\varphi \let\varphi\tmp
+
+\newcommand{\eqtransform}{\ensuremath{\qquad\big|\,\,}} % Equivalence transformation
+\newcommand{\ditto}{\textquotedbl} \newcommand{\dito}{\ditto} % "Ditto" sign
+\renewcommand{\qed}{\nopagebreak\hfill\ensuremath{\square}} % End of proof: "quod erat demonstrandum"
+
+% Math mode table columns.
+\newcolumntype{L}{>{\(}l<{\)}}
+\newcolumntype{R}{>{\(}r<{\)}}
+\newcolumntype{C}{>{\(}c<{\)}}
+
+% Calculus:
+\RequirePackage{keycommand} % Befehle mit Key-Value Optionen definieren
+\newcounter{calculusRowCount}
+\newkeyenvironment{calculus}[symbol, bool show-index=false, context=\Gamma, context-command=context]{
+\setcounter{calculusRowCount}{0}
+\newcommand{\calculusSymbol}{\text{\sffamily\itshape\commandkey{symbol}}}
+\newcommand{\calculusContext}{\ensuremath{\commandkey{context}}}
+\expandafter\let\csname \commandkey{context-command}\endcsname\calculusContext
+\par\vspace{0.5em}
+\begin{minipage}{\textwidth}\begin{tabular}{
+@{\stepcounter{calculusRowCount} (\arabic{calculusRowCount})\hspace{1em}} R
+@{\hspace{0.4em} $\vdash_{\ifthenelse{\equal{\commandkey{show-index}}{1}}{\ifthenelse{\equal{\commandkey{symbol}}{}}{}{\calculusSymbol}}{\hspace{-0.1em}}}$\hspace{0.6em}}
+L l}
+}{
+\end{tabular}\end{minipage}\vspace{0.5em}
+\let\calculusContext\undefined \let\calculusSymbol\undefined
+}
+\newenvironment{eqcalc}[1][]{\begin{calculus}[symbol=E, show-index=true,context=\calculusSymbol_{#1}, context-command=E]}{\end{calculus}} % Equation calculus
+\newenvironment{seqcalc}{\begin{calculus}[symbol=S, show-index=true, context=\calculusSymbol, context-command=seq]}{\end{calculus}} % Sequence calculus
